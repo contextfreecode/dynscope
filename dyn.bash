@@ -1,18 +1,14 @@
 user="me"
 
-do-something() {
-    echo $user
+perform() {
+    echo $user performs $@
 }
 
-nested() {
-    (do-something)
+switch-user() {
+    user="$1"
+    ("${@:2}")
 }
 
-switch-user-nested() {
-    user="them"
-    (do-something)
-}
-
-(nested)
-(switch-user-nested)
-(nested)
+(perform something)
+(switch-user them perform something else)
+(perform again)
