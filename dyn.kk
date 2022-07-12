@@ -7,10 +7,9 @@ fun really-perform(task): <console, env> ()
 fun perform(task): <console, env> ()
   really-perform(task)
 
-fun with-mode(
-  new-mode: string,
-  action: () -> <console, env> ()
-): <console, env> ()
+// TODO Why not this?
+// fun with-mode(new-mode: string, action: () -> <|e> a): <env|e> a
+fun with-mode(new-mode: string, action: () -> <env|e> a): <|e> a
   with val mode = new-mode
   action()
 
