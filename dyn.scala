@@ -21,6 +21,6 @@ def withMode[T](mode: String)(action: Env ?=> T) =
 
 @main def main() =
   perform("something")
-  withMode(mode = "faster") { perform("reliable") }
+  withMode("faster") { perform("reliable") }
   perform("again")
 end main
