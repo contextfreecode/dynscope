@@ -1,33 +1,36 @@
-type SwitchUserRequest<T> = {
+type WithModeRequest<T> = {
   request: Request;
-  user: string;
+  mode: string;
   action: (request: Request) => T;
 };
 
-function perform(request: Request, ...task: string[]): string {
-  const user = request.headers.get("user");
-  return `${user} performs ${task.join(" ")}`;
+function reallyPerform(request: Request, task: string): string {
+  const mode = request.headers.get("mode");
+  return `${mode}: ${task}`;
 }
 
-function switchUser<T>(request: SwitchUserRequest<T>): T {
+function perform(request: Request, task: string): string {
+  return reallyPerform(request, task);
+}
+
+function switchUser<T>(request: WithModeRequest<T>): T {
   const next = request.request.clone();
-  next.headers.set("user", request.user);
+  next.headers.set("mode", request.mode);
   return request.action(next);
 }
 
 export default {
   port: 3000,
   fetch(request: Request) {
-    // Pretend the request comes with this header.
-    request.headers.set("user", "me");
+    request.headers.set("mode", "safe");
     const result = [] as string[];
     // Gather up each section.
     result.push(perform(request, "something"));
     result.push(
       switchUser({
         request,
-        user: "them",
-        action: (request) => perform(request, "something", "else"),
+        mode: "faster",
+        action: (request) => perform(request, "reliable"),
       }),
     );
     result.push(perform(request, "again"));

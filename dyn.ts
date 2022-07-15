@@ -1,25 +1,30 @@
-const user = "me";
+const mode = "safe";
 
-type SwitchUserRequest<T> = {
-  user: string;
+type WithModeRequest<T> = {
+  mode: string;
   action: () => T;
 };
 
-function perform(...task: string[]): void {
-  console.log(`${user} performs ${task.join(" ")}`);
+function reallyPerform(task: string): void {
+  console.log(`${mode}: ${task}`);
 }
 
-function switchUser<T>(request: SwitchUserRequest<T>): T {
-  const user = request.user;
+function perform(task: string): void {
+  reallyPerform(task);
+}
+
+function withMode<T>(request: WithModeRequest<T>): T {
+  // TODO try/finally global change!
+  const mode = request.mode;
   return request.action();
 }
 
 export function main() {
   perform("something");
-  switchUser({
-    user: "them",
+  withMode({
+    mode: "faster",
     action: () => {
-      perform("something", "else");
+      perform("reliable");
     },
   });
   perform("again");

@@ -1,13 +1,17 @@
 #import "Basic";
 #import "String";
 
-#add_context user := "me";
+#add_context user := "safe";
 
-perform :: (args: ..string) {
-    print("% performs %\n", context.user, join(..args, " "));
+perform_really :: (task: string) {
+    print("%: %\n", context.user, task);
 }
 
-switch_user :: (user: string, action: (args: Args) -> (), args: $Args) {
+perform :: (task: string) {
+    perform_really(task);
+}
+
+with_mode :: (user: string, action: (args: $Args) -> (), args: Args) {
     new_context := context;
     push_context new_context {
         context.user = user;
@@ -17,6 +21,6 @@ switch_user :: (user: string, action: (args: Args) -> (), args: $Args) {
 
 main :: () {
     perform("something");
-    switch_user("them", perform, cast([]string) .["something", "else"]);
+    with_mode("faster", perform, "reliable");
     perform("again");
 }

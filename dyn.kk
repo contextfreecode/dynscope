@@ -2,7 +2,7 @@ effect env
   val mode: string
 
 fun really-perform(task): <console, env> ()
-  println(mode ++ " perform " ++ task)
+  println(mode ++ ": " ++ task)
 
 fun perform(task): <console, env> ()
   really-perform(task)
@@ -13,7 +13,7 @@ fun with-mode(new-mode: string, action: () -> <env|e> a): <|e> a
   with val mode = new-mode
   action()
 
-fun main(): <console> ()
+fun main(): console ()
   with val mode = "safe"
   perform("something")
   with-mode("faster")
