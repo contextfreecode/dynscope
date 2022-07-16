@@ -6,14 +6,14 @@ case class Env(
 
 given Env = Env(mode = "safe")
 
-def reallyPerform[A, Task <: Seq[A]](task: Task)(using env: Env) =
+def reallyPerform[Task <: Seq[?]](task: Task)(using env: Env) =
   println(s"${env.mode}: $task")
   task.length
 
-def perform[A, Task <: Seq[A]](task: Task)(using env: Env) =
+def perform[Task <: Seq[?]](task: Task)(using env: Env) =
   reallyPerform(task)
 
-// def withMode[T](mode: String)(action: (env: Env) ?=> T)(using env: Env) =
+// def withMode[R](mode: String)(action: (env: Env) ?=> R)(using env: Env) =
 //   given Env = env.copy(mode = mode)
 //   action
 

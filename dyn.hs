@@ -2,14 +2,17 @@
 
 import Text.Printf (printf)
 
-reallyPerform :: String -> IO ()
-reallyPerform task = putStrLn $ printf "%s: %s" "mode" task
+reallyPerform :: Show a => [a] -> IO Int
+reallyPerform task = do
+    putStrLn $ printf "%s: %s" "mode" (show task)
+    return $ length task
 
-perform :: String -> IO ()
+perform :: Show a => [a] -> IO Int
 perform = reallyPerform
 
 main :: IO ()
 main = do
-    perform "something"
-    perform "reliable"
-    perform "again"
+    a <- perform "something"
+    b <- perform "reliable"
+    c <- perform ["again"]
+    putStrLn $ printf "result: %d" $ a + b + c

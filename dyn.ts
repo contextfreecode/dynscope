@@ -1,11 +1,11 @@
 const mode = "safe";
 
+type HasLength = { length: number };
+
 type WithModeRequest<T> = {
   mode: string;
   action: () => T;
 };
-
-type HasLength = { length: number };
 
 function reallyPerform<Task extends HasLength>(task: Task): number {
   console.log(`${mode}: ${task}`);
