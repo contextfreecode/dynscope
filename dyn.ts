@@ -5,29 +5,33 @@ type WithModeRequest<T> = {
   action: () => T;
 };
 
-function reallyPerform(task: string): void {
+type HasLength = { length: number };
+
+function reallyPerform<Task extends HasLength>(task: Task): number {
   console.log(`${mode}: ${task}`);
+  return task.length;
 }
 
-function perform(task: string): void {
-  reallyPerform(task);
+function perform<Task extends HasLength>(task: Task): number {
+  return reallyPerform(task);
 }
 
-function withMode<T>(request: WithModeRequest<T>): T {
+function withMode<Result>(request: WithModeRequest<Result>): Result {
   // TODO try/finally global change!
   const mode = request.mode;
   return request.action();
 }
 
 export function main() {
-  perform("something");
-  withMode({
+  let result = perform("something");
+  result += withMode({
     mode: "faster",
     action: () => {
-      perform("reliable");
+      return perform("reliable");
     },
   });
-  perform("again");
+  result += perform(["again"]);
+  console.log(`result: ${result}`)
 }
 
 main();

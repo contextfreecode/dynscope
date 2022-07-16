@@ -3,24 +3,32 @@
 
 #add_context user := "safe";
 
-perform_really :: (task: string) {
+perform_really :: (task: $Task) -> s64 {
     print("%: %\n", context.user, task);
+    return task.count;
 }
 
-perform :: (task: string) {
-    perform_really(task);
+perform :: (task: string) -> s64 {
+    return perform_really(task);
 }
 
-with_mode :: (user: string, action: (args: $Args) -> (), args: Args) {
+perform :: (task: []string) -> s64 {
+    return perform_really(task);
+}
+
+with_mode :: (
+    user: string, action: (args: $Args) -> $Result, args: Args
+) -> Result {
     new_context := context;
     push_context new_context {
         context.user = user;
-        action(args);
+        return action(args);
     }
 }
 
 main :: () {
-    perform("something");
-    with_mode("faster", perform, "reliable");
-    perform("again");
+    result := perform("something");
+    result += with_mode("faster", perform, "reliable");
+    result += perform(.["again"]);
+    print("result: %\n", result);
 }

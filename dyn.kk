@@ -1,10 +1,21 @@
 effect env
   val mode: string
 
-fun really-perform(task): <console, env> ()
-  println(mode ++ ": " ++ task)
+fun count(items: list<a>): int
+  items.length
 
-fun perform(task): <console, env> ()
+fun really-perform(task: list<string>): <console, env> int
+  println(mode ++ ": " ++ task.show)
+  task.count
+
+fun really-perform(task: string): <console, env> int
+  println(mode ++ ": " ++ task.show)
+  task.count
+
+fun perform(task: list<string>): <console, env> int
+  really-perform(task)
+
+fun perform(task: string): <console, env> int
   really-perform(task)
 
 // TODO Why not this?
@@ -15,7 +26,8 @@ fun with-mode(new-mode: string, action: () -> <env|e> a): <|e> a
 
 fun main(): console ()
   with val mode = "safe"
-  perform("something")
-  with-mode("faster")
+  var result := perform("something")
+  result := result + with-mode("faster")
     perform("reliable")
-  perform("again")
+  result := result + perform(["again"])
+  println("result: " ++ result.show)
