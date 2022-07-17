@@ -1,6 +1,7 @@
 {-# LANGUAGE ImplicitParams #-}
 
 import Text.Printf (printf)
+import Data.List (intercalate)
 
 reallyPerform :: Show a => [a] -> IO Int
 reallyPerform task = do
@@ -15,4 +16,4 @@ main = do
     a <- perform "something"
     b <- perform "reliable"
     c <- perform ["again"]
-    putStrLn $ printf "result: %d" $ a + b + c
+    putStrLn $ intercalate " " $ map show [a, b, c]
