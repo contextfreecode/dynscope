@@ -23,15 +23,11 @@ function withMode<Result>(request: WithModeRequest<Result>): Result {
 }
 
 export function main() {
-  let result = perform("something");
-  result += withMode({
-    mode: "faster",
-    action: () => {
-      return perform("reliable");
-    },
-  });
-  result += perform(["again"]);
-  console.log(`result: ${result}`)
+  console.log(
+    perform("something"),
+    withMode({ mode: "faster", action: () => perform("reliable") }),
+    perform(["again"]),
+  );
 }
 
 main();

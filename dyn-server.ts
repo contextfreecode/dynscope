@@ -13,7 +13,7 @@ function perform(request: Request, task: string): string {
   return reallyPerform(request, task);
 }
 
-function switchUser<T>(request: WithModeRequest<T>): T {
+function switchUser<Result>(request: WithModeRequest<Result>): Result {
   const next = request.request.clone();
   next.headers.set("mode", request.mode);
   return request.action(next);

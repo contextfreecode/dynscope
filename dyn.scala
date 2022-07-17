@@ -21,8 +21,11 @@ def withMode[Result](mode: String)(action: Env ?=> Result) =
   (env: Env) ?=> action(using env.copy(mode = mode))
 
 @main def main() =
-  var result = perform("something")
-  result += withMode("faster") { perform("reliable") }
-  result += perform(List("again"))
-  println(s"result: $result")
+  println(
+    List(
+      perform("something"),
+      withMode("faster") { perform("reliable") },
+      perform(List("again")),
+    ).mkString(" ")
+  )
 end main

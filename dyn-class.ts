@@ -1,23 +1,33 @@
 const user = "me";
 
-class Request {
+type HasLength = { length: number };
+
+class Request<Task extends HasLength> {
   mode: string;
 
-  reallyPerform(task: string): void {
+  reallyPerform(task: Task): number {
     console.log(`${this.mode}: ${task}`);
+    return task.length;
   }
 
-  perform(task: string): void {
-    this.reallyPerform(task);
+  perform(task: Task): number {
+    return this.reallyPerform(task);
   }
 }
 
 export function main() {
-  const request = Object.assign(new Request(), { mode: "safe" });
-  request.perform("something");
-  const fasterRequest = Object.assign(new Request(), { mode: "faster" });
-  fasterRequest.perform("reliable");
-  request.perform("again");
+  const request = Object.assign(new Request<String>(), { mode: "safe" });
+  const fasterRequest = Object.assign(new Request<String>(), {
+    mode: "faster",
+  });
+  const arrayRequest = Object.assign(new Request<String[]>(), {
+    mode: request.mode,
+  });
+  console.log(
+    request.perform("something"),
+    fasterRequest.perform("reliable"),
+    arrayRequest.perform(["again"]),
+  );
 }
 
 main();

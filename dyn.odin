@@ -33,8 +33,9 @@ with_mode :: proc(
 
 main :: proc() {
     context.user_ptr = &Env{mode="safe"}
-    result := perform("something")
-    result += with_mode("faster", perform_string, "reliable")
-    result += perform([]string{"again"})
-    fmt.printf("result: %d\n", result)
+    fmt.println(
+        perform("something"),
+        with_mode("faster", perform_string, "reliable"),
+        perform([]string{"again"}),
+    )
 }

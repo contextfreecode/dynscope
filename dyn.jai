@@ -27,8 +27,10 @@ with_mode :: (
 }
 
 main :: () {
-    result := perform("something");
-    result += with_mode("faster", perform, "reliable");
-    result += perform(.["again"]);
-    print("result: %\n", result);
+    print(
+        "% % %\n",
+        perform("something"),
+        with_mode("faster", perform, "reliable"),
+        perform(.["again"]),
+    );
 }

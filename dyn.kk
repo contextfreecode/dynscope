@@ -26,8 +26,8 @@ fun with-mode(new-mode: string, action: () -> <env|e> a): <|e> a
 
 fun main(): console ()
   with val mode = "safe"
-  var result := perform("something")
-  result := result + with-mode("faster")
-    perform("reliable")
-  result := result + perform(["again"])
-  println("result: " ++ result.show)
+  println(
+    perform("something").show ++ " " ++
+    with-mode("faster") { perform("reliable") }.show ++ " " ++
+    perform(["again"]).show
+  )

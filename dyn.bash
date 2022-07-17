@@ -1,7 +1,8 @@
 mode="safe"
 
 really-perform() {
-    echo $mode: $1
+    echo $mode: $1 >&2
+    echo ${#1}
 }
 
 perform() {
@@ -13,6 +14,7 @@ switch-mode() {
     ("${@:2}")
 }
 
-(perform something)
-(switch-mode faster perform reliable)
-(perform again)
+echo \
+    $(perform something) \
+    $(switch-mode faster perform reliable) \
+    $(perform again)
