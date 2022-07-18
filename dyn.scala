@@ -28,4 +28,3 @@ def withMode[Result](mode: String)(action: Env ?=> Result) =
       perform(List("again")),
     ).mkString(" ")
   )
-end main

@@ -20,7 +20,7 @@ fun perform(task: string): <console, env> int
 
 // TODO Why not this?
 // fun with-mode(new-mode: string, action: () -> <|e> a): <env|e> a
-fun with-mode(new-mode: string, action: () -> <env|e> a): <|e> a
+fun with-mode(new-mode: string, action: () -> <env|e> r): <|e> r
   with val mode = new-mode
   action()
 

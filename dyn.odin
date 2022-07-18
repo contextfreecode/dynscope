@@ -12,15 +12,13 @@ really_perform :: proc(task: $Task) -> int {
     return len(task)
 }
 
-perform_array :: proc(task: []string) -> int {
+perform :: proc(task: $Task) -> int {
     return really_perform(task)
 }
 
 perform_string :: proc(task: string) -> int {
     return really_perform(task)
 }
-
-perform :: proc{perform_array, perform_string};
 
 with_mode :: proc(
     mode: string, action: proc(args: $Args) -> $Result, args: Args,

@@ -1,19 +1,35 @@
 {-# LANGUAGE ImplicitParams #-}
+{-# LANGUAGE OverloadedRecordDot #-}
+{-# LANGUAGE RankNTypes #-}
 
-import Text.Printf (printf)
 import Data.List (intercalate)
+import Text.Printf (printf)
 
-reallyPerform :: Show a => [a] -> IO Int
+data Env = Env {mode :: String}
+
+reallyPerform :: (Show item, ?env :: Env) => [item] -> IO Int
 reallyPerform task = do
-    putStrLn $ printf "%s: %s" "mode" (show task)
-    return $ length task
+  putStrLn $ printf "%s: %s" ?env.mode (show task)
+  return $ length task
 
-perform :: Show a => [a] -> IO Int
+perform :: (Show item, ?env :: Env) => [item] -> IO Int
 perform = reallyPerform
+
+withMode :: (?env :: Env) => String -> ((?env :: Env) => result) -> result
+withMode mode action =
+  let ?env = ?env {mode} in action
 
 main :: IO ()
 main = do
-    a <- perform "something"
-    b <- perform "reliable"
-    c <- perform ["again"]
-    putStrLn $ intercalate " " $ map show [a, b, c]
+  let ?env = Env {mode = "safe"}
+  results <-
+    map show
+      <$> sequence
+        [ perform "something",
+          withMode "faster" perform "reliable",
+          perform ["again"]
+        ]
+  putStrLn $ intercalate " " results
+
+-- https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/implicit_parameters.html#extension-ImplicitParams
+-- https://idris2.readthedocs.io/en/latest/tutorial/typesfuns.html#implicit-arguments
