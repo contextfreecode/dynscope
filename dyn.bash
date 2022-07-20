@@ -9,12 +9,16 @@ perform() {
     (really-perform $1)
 }
 
-switch-mode() {
+with-mode() {
     mode="$1"
-    ("${@:2}")
+    "${@:2}"
 }
 
-echo \
-    $(perform something) \
-    $(switch-mode faster perform reliable) \
-    $(perform again)
+main() {
+    echo \
+        $(perform something) \
+        $(with-mode faster perform reliable) \
+        $(perform again)
+}
+
+main

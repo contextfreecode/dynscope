@@ -1,15 +1,24 @@
-type WithModeRequest<T> = {
+type HasLength = { length: number };
+
+type WithModeRequest<Result> = {
   request: Request;
   mode: string;
-  action: (request: Request) => T;
+  action: (request: Request) => Result;
 };
 
-function reallyPerform(request: Request, task: string): string {
+function reallyPerform<Task extends HasLength>(
+  request: Request,
+  task: Task,
+): number {
   const mode = request.headers.get("mode");
-  return `${mode}: ${task}`;
+  console.log(`${mode}: ${task}`);
+  return task.length;
 }
 
-function perform(request: Request, task: string): string {
+function perform<Task extends HasLength>(
+  request: Request,
+  task: Task,
+): number {
   return reallyPerform(request, task);
 }
 
@@ -23,18 +32,14 @@ export default {
   port: 3000,
   fetch(request: Request) {
     request.headers.set("mode", "safe");
-    const result = [] as string[];
-    // Gather up each section.
-    result.push(perform(request, "something"));
-    result.push(
+    return new Response([
+      perform(request, "something"),
       switchUser({
         request,
         mode: "faster",
         action: (request) => perform(request, "reliable"),
       }),
-    );
-    result.push(perform(request, "again"));
-    // Done.
-    return new Response(result.join("\n"));
+      perform(request, ["again"]),
+    ].join(" "));
   },
 };

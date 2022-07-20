@@ -2,9 +2,9 @@ const mode = "safe";
 
 type HasLength = { length: number };
 
-type WithModeRequest<T> = {
+type WithModeRequest<Result> = {
   mode: string;
-  action: () => T;
+  action: () => Result;
 };
 
 function reallyPerform<Task extends HasLength>(task: Task): number {
