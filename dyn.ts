@@ -17,7 +17,6 @@ function perform<Task extends HasLength>(task: Task): number {
 }
 
 function withMode<Result>(request: WithModeRequest<Result>): Result {
-  // TODO try/finally global change!
   const mode = request.mode;
   return request.action();
 }

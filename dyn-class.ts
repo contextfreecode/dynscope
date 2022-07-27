@@ -1,5 +1,3 @@
-const user = "me";
-
 type HasLength = { length: number };
 
 class Request<Task extends HasLength> {

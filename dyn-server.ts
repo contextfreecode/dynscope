@@ -22,7 +22,7 @@ function perform<Task extends HasLength>(
   return reallyPerform(request, task);
 }
 
-function switchUser<Result>(request: WithModeRequest<Result>): Result {
+function withMode<Result>(request: WithModeRequest<Result>): Result {
   const next = request.request.clone();
   next.headers.set("mode", request.mode);
   return request.action(next);
@@ -34,7 +34,7 @@ export default {
     request.headers.set("mode", "safe");
     return new Response([
       perform(request, "something"),
-      switchUser({
+      withMode({
         request,
         mode: "faster",
         action: (request) => perform(request, "reliable"),
